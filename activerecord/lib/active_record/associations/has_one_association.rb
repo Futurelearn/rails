@@ -50,7 +50,7 @@ module ActiveRecord
       end
 
       def delete(method = options[:dependent])
-        if load_target
+        if load_target && target.persisted?
           case method
             when :delete
               target.delete
