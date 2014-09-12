@@ -12,6 +12,24 @@ class Content < ActiveRecord::Base
   end
 end
 
+class ContentWhichRequiresTwoDestroyCalls < ActiveRecord::Base
+  self.table_name = 'content'
+  has_one :content_position, foreign_key: 'content_id', dependent: :destroy
+
+  after_initialize do
+    @destroy_count = 0
+  end
+
+  before_destroy do
+    @destroy_count += 1
+    if @destroy_count > 1
+      true
+    else
+      false
+    end
+  end
+end
+
 class ContentPosition < ActiveRecord::Base
   belongs_to :content, dependent: :destroy
 

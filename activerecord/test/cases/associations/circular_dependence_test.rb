@@ -30,4 +30,12 @@ class CircularDependenceTest < ActiveRecord::TestCase
     assert_equal [content.id], Content.destroyed_ids
     assert_equal [content_position.id], ContentPosition.destroyed_ids
   end
+
+  def test_circular_dependence_when_destroying_item_with_has_one_association_twice
+    content = ContentWhichRequiresTwoDestroyCalls.find(1)
+
+    2.times { content.destroy }
+
+    assert_equal content.destroyed?, true
+  end
 end
