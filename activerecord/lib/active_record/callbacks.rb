@@ -289,6 +289,8 @@ module ActiveRecord
     end
 
     def destroy #:nodoc:
+      return if @_destroy_callback_already_called
+      @_destroy_callback_already_called = true
       run_callbacks(:destroy) { super }
     end
 
